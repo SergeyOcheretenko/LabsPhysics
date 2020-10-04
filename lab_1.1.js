@@ -29,33 +29,33 @@ const tabln = (array1, number) => {
   let arrayT = array1.map(elem => Math.round(elem / 5 * 1000) / 1000);
   let ser = Math.round((arrayT.reduce((acc, elem) => acc + Number(elem), 0)) / number *   10000) / 10000;
   let arrayDT = arrayT.map(elem => elem = Math.round((elem - ser) * 10000) / 10000);
-  let arrayN50 = [];
-  for (let i = 0; i < 20; i++) arrayN50.push(0);
+  let arrayN = [];
+  for (let i = 0; i < 20; i++) arrayN.push(0);
   for (const elem of arrayDT){
     if (elem >= -0,1){
-      if (elem < -0.09) arrayN50[0]++;
-      else if (elem < -0.08) arrayN50[1]++;
-      else if (elem < -0.07) arrayN50[2]++;
-      else if (elem < -0.06) arrayN50[3]++;
-      else if (elem < -0.05) arrayN50[4]++;
-      else if (elem < -0.04) arrayN50[5]++;
-      else if (elem < -0.03) arrayN50[6]++;
-      else if (elem < -0.02) arrayN50[7]++;
-      else if (elem < -0.01) arrayN50[8]++;
-      else if (elem < 0) arrayN50[9]++;
-      else if (elem < 0.01) arrayN50[10]++;
-      else if (elem < 0.02) arrayN50[11]++;
-      else if (elem < 0.03) arrayN50[12]++;
-      else if (elem < 0.04) arrayN50[13]++;
-      else if (elem < 0.05) arrayN50[14]++;
-      else if (elem < 0.06) arrayN50[15]++;
-      else if (elem < 0.07) arrayN50[16]++;
-      else if (elem < 0.08) arrayN50[17]++;
-      else if (elem < 0.09) arrayN50[18]++;
-      else if (elem < 0.1) arrayN50[19]++;
+      if (elem < -0.09) arrayN[0]++;
+      else if (elem < -0.08) arrayN[1]++;
+      else if (elem < -0.07) arrayN[2]++;
+      else if (elem < -0.06) arrayN[3]++;
+      else if (elem < -0.05) arrayN[4]++;
+      else if (elem < -0.04) arrayN[5]++;
+      else if (elem < -0.03) arrayN[6]++;
+      else if (elem < -0.02) arrayN[7]++;
+      else if (elem < -0.01) arrayN[8]++;
+      else if (elem < 0) arrayN[9]++;
+      else if (elem < 0.01) arrayN[10]++;
+      else if (elem < 0.02) arrayN[11]++;
+      else if (elem < 0.03) arrayN[12]++;
+      else if (elem < 0.04) arrayN[13]++;
+      else if (elem < 0.05) arrayN[14]++;
+      else if (elem < 0.06) arrayN[15]++;
+      else if (elem < 0.07) arrayN[16]++;
+      else if (elem < 0.08) arrayN[17]++;
+      else if (elem < 0.09) arrayN[18]++;
+      else if (elem < 0.1) arrayN[19]++;
     }
   }
-  return(arrayN50);
+  return(arrayN);
 }
 
 const dnN = (array, number) => {
