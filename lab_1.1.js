@@ -6,32 +6,32 @@ let array1 = [];
 let array = [];
 
 for(let i = 0; i < 100; i++){
-  array.push(`15.${Math.round(random(70, 97))}`)
+  array.push(`15.${Math.round(random(72, 94))}`)
   if (i < 50) array1.push(array[i]);
 }
 
+const tablT = (array) => { return array.map(elem => Math.round(Number(elem) / 5 * 1000) / 1000); }
+
+const average = (array, number) => { return Math.round((tablT(array).reduce((acc, elem) => acc + Number(elem), 0)) / number *   10000) / 10000; }
+
+const tablDT = (array, ser) => { return tablT(array).map(elem => elem = Math.round((elem - ser) * 10000) / 10000); }
+
 const tabl = (array, number) => {
   console.log(array);
-  let arrayT = array.map(elem => Math.round(elem / 5 * 1000) / 1000)
-  console.log(arrayT);
-  let ser = Math.round((arrayT.reduce((acc, elem) => acc + Number(elem), 0)) / number *   10000) / 10000;
-  console.log(Math.round((arrayT.reduce((acc, elem) => acc + Number(elem), 0)) * 10000) / 10000);
-  console.log(ser);
-  let arrayDT = arrayT.map(elem => elem = Math.round((elem - ser) * 10000) / 10000)
-  console.log(arrayDT);
-  let arrayDTpow = arrayDT.map(elem => elem = Math.round(elem ** 2 * 100000000) / 100000000);
+  console.log(tablT(array))
+  console.log(Math.round((tablT(array).reduce((acc, elem) => acc + Number(elem), 0)) * 10000) / 10000);
+  console.log(average(array, number));
+  console.log(tablDT(array, average(array, number)));
+  let arrayDTpow = tablDT(array, average(array, number)).map(elem => elem = Math.round(elem ** 2 * 100000000) / 100000000);
   console.log(arrayDTpow);
   console.log(Math.round(arrayDTpow.reduce((acc, elem) => acc + elem, 0) * 100000000) / 100000000);
   console.log(Math.round((arrayDTpow.reduce((acc, elem) => acc + elem, 0)) / number * 1000000000) / 1000000000);
 }
 
-const tabln = (array1, number) => {
-  let arrayT = array1.map(elem => Math.round(elem / 5 * 1000) / 1000);
-  let ser = Math.round((arrayT.reduce((acc, elem) => acc + Number(elem), 0)) / number *   10000) / 10000;
-  let arrayDT = arrayT.map(elem => elem = Math.round((elem - ser) * 10000) / 10000);
+const tabln = (array, number) => {
   let arrayN = [];
   for (let i = 0; i < 20; i++) arrayN.push(0);
-  for (const elem of arrayDT){
+  for (const elem of tablDT(array, average(array, number))){
     if (elem >= -0,1){
       if (elem < -0.09) arrayN[0]++;
       else if (elem < -0.08) arrayN[1]++;
@@ -69,13 +69,9 @@ const dnN = (array, number) => {
 }
 
 const s = (array, number) => {
-  let arrayT = array.map(elem => Math.round(elem / 5 * 1000) / 1000);
-  let ser = Math.round((arrayT.reduce((acc, elem) => acc + Number(elem), 0)) / number *   10000) / 10000;
-  let arrayDT = arrayT.map(elem => elem = Math.round((elem - ser) * 10000) / 10000);
-  let arrayDTpow = arrayDT.map(elem => elem = Math.round(elem ** 2 * 100000000) / 100000000);
+  let arrayDTpow = tablDT(array, average(array, number)).map(elem => elem = Math.round(elem ** 2 * 100000000) / 100000000);
   console.log(Math.round(Math.sqrt(arrayDTpow.reduce((acc, elem) => acc + elem, 0) / number / (number - 1)) * 100000000) / 100000000);
 }
-
 
 tabl(array1, 50);
 console.log(tabln(array1, 50));
