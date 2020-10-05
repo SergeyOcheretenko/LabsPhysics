@@ -5,29 +5,55 @@ function random(min, max) {
 let array1 = [];
 let array = [];
 
+// Заполнение массивов результатов лабораторной
 for(let i = 0; i < 100; i++){
   array.push(`15.${Math.round(random(72, 94))}`)
   if (i < 50) array1.push(array[i]);
 }
 
+// Создание массива периодов
 const tablT = (array) => { return array.map(elem => Math.round(Number(elem) / 5 * 1000) / 1000); }
 
+// Создание среднего значения периода
 const average = (array, number) => { return Math.round((tablT(array).reduce((acc, elem) => acc + Number(elem), 0)) / number *   10000) / 10000; }
 
+// Создание массива абсолютных погрешностей
 const tablDT = (array, ser) => { return tablT(array).map(elem => elem = Math.round((elem - ser) * 10000) / 10000); }
 
-const tabl = (array, number) => {
-  console.log(array);
-  console.log(tablT(array))
-  console.log(Math.round((tablT(array).reduce((acc, elem) => acc + Number(elem), 0)) * 10000) / 10000);
-  console.log(average(array, number));
-  console.log(tablDT(array, average(array, number)));
-  let arrayDTpow = tablDT(array, average(array, number)).map(elem => elem = Math.round(elem ** 2 * 100000000) / 100000000);
-  console.log(arrayDTpow);
-  console.log(Math.round(arrayDTpow.reduce((acc, elem) => acc + elem, 0) * 100000000) / 100000000);
-  console.log(Math.round((arrayDTpow.reduce((acc, elem) => acc + elem, 0)) / number * 1000000000) / 1000000000);
+// Создание массива относительного количества результатов для таблицы размером number, попавших в узкие промежутки
+const dnN = (array, number) => {
+  let arrayDnN = [];
+  for (let i = 0; i < 20; i++) arrayDnN.push('');
+  for (let i = 0; i < 20; i++){
+    if (array[i] == 0) arrayDnN[i] += '0';
+    else arrayDnN[i] += `${array[i]}/${number}`;
+  }
+  return arrayDnN;
 }
 
+// Вычисление средней квадратической погрешности для таблицы размером number
+const s = (array, number) => {
+  let arrayDTpow = tablDT(array, average(array, number)).map(elem => elem = Math.round(elem ** 2 * 100000000) / 100000000);
+  return Math.round(Math.sqrt(arrayDTpow.reduce((acc, elem) => acc + elem, 0) / number / (number - 1)) * 100000000) / 100000000;
+}
+
+// Функция, систематизирующая вывод всех таблиц по заданому массиву входных данных размером number
+const tabl = (array, number) => {
+  console.log(array); // Вывод массива результатов лабораторной
+  console.log(tablT(array)) // Вывод массива периодов
+  console.log(`Сумма значений периодов для ${number} замеров: ${Math.round((tablT(array).reduce((acc, elem) => acc + Number(elem), 0)) * 10000) / 10000}`);
+  console.log(`Среднее значение периода для ${number} замеров: ${average(array, number)}`);
+  console.log(tablDT(array, average(array, number))); // Вывод массива абсолютных погрешностей
+  let arrayDTpow = tablDT(array, average(array, number)).map(elem => elem = Math.round(elem ** 2 * 100000000) / 100000000); 
+  console.log(arrayDTpow); // Создание и вывод массива квадратов абс. погрешностей
+  console.log(`Сумма квадратов абсолютных погрешностей для ${number} замеров: ${Math.round(arrayDTpow.reduce((acc, elem) => acc + elem, 0) * 100000000) / 100000000}`);
+  console.log(`Среднее значение квадрата абсолютной погрешности для ${number} замеров: ${Math.round((arrayDTpow.reduce((acc, elem) => acc + elem, 0)) / number * 1000000000) / 1000000000}`);
+  console.log(tabln(array, number));
+  console.log(dnN(tabln(array, number), number));
+  console.log(`Случайная погрешность для ${number} замеров: ${s(array, number)}`);
+}
+
+// Создание массива количества результатов, попавших в узкие промежутки
 const tabln = (array, number) => {
   let arrayN = [];
   for (let i = 0; i < 20; i++) arrayN.push(0);
@@ -58,29 +84,7 @@ const tabln = (array, number) => {
   return(arrayN);
 }
 
-const dnN = (array, number) => {
-  let arrayDnN = [];
-  for (let i = 0; i < 20; i++) arrayDnN.push('');
-  for (let i = 0; i < 20; i++){
-    if (array[i] == 0) arrayDnN[i] += '0';
-    else arrayDnN[i] += `${array[i]}/${number}`;
-  }
-  console.log(arrayDnN);
-}
-
-const s = (array, number) => {
-  let arrayDTpow = tablDT(array, average(array, number)).map(elem => elem = Math.round(elem ** 2 * 100000000) / 100000000);
-  console.log(Math.round(Math.sqrt(arrayDTpow.reduce((acc, elem) => acc + elem, 0) / number / (number - 1)) * 100000000) / 100000000);
-}
-
 tabl(array1, 50);
-console.log(tabln(array1, 50));
 tabl(array, 100);
-console.log(tabln(array, 100));
-dnN(tabln(array1, 50), 50);
-dnN(tabln(array, 100), 100);
 
-s(array1, 50);
-s(array, 100);
-
-console.log(Math.round(0.01 / (5 * Math.sqrt(12)) * 1000000) / 1000000);
+console.log(`Систематическая погрешность: ${Math.round(0.01 / (5 * Math.sqrt(12)) * 1000000) / 1000000}`);
