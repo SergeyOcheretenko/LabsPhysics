@@ -44,14 +44,7 @@ const tabl = (array, number) => {
   console.log(`Таблица для ${number} элементов`);
   console.log('-------------------------------------------------------------');//Useless line
   console.log(`| №\t\t|\tT,сек\t|\tПериод\t|\tПогреш.\t|\tКв.погреш.\t|`);
-  for(let i = 0; i<number;i++) {
-    console.log('|-------+-----------+-----------+-----------+---------------|');//Useless line
-    console.log(`| ${i+1}.\t|\t${array[i]}\t|\t${arrayT[i]}\t|\t${arrayDT[i]}\t|\t${arrayDTpow[i].toFixed(8)}\t|`);
-  }
-  console.log('-------------------------------------------------------------\n');//Useless line
-  
-  console.log(`Сумма значений периодов(Σ T) для ${number} замеров: ${Math.round((tablT(array).reduce((acc, elem) => acc + Number(elem), 0)) * 10000) / 10000}`);
-  console.log(`Среднее значение периода(<T>) для ${number} замеров: ${average(array, number)}\n`);
+  <T>) для ${number} замеров: ${average(array, number)}\n`);
   console.log(`Сумма квадратов абсолютных погрешностей(Σ(△ T)²) для ${number} замеров: ${Math.round(arrayDTpow.reduce((acc, elem) => acc + elem, 0) * 100000000) / 100000000}`);
   console.log(`Среднее значение квадрата абсолютной погрешности(Σ(△ T)² / ${number}) для ${number} замеров: ${Math.round((arrayDTpow.reduce((acc, elem) => acc + elem, 0)) / number * 1000000000) / 1000000000}\n`);
   console.log(`Таблица интервалов\tТаблица интервалов\nотклонений для ${number}\tотклонений для ${number}\nэлементов\t\t\tэлементов × 1/${number}`);
