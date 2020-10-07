@@ -26,6 +26,9 @@
     td{
       padding: 3px;
     }
+    p{
+      line-height: 1.3;
+    }
   </style>
 <body>
     <div id="table-lab"></div>
@@ -67,7 +70,7 @@
       // Вычисление средней квадратической погрешности для таблицы размером number
       const s = (array, number) => {
         let arrayDTpow = tablDT(array, average(array, number)).map(elem => elem = Math.round(elem ** 2 * 100000000) / 100000000);
-        return Math.round(Math.sqrt(arrayDTpow.reduce((acc, elem) => acc + elem, 0) / number / (number - 1)) * 100000000) / 100000000;
+        return Math.round(Math.sqrt(arrayDTpow.reduce((acc, elem) => acc + elem, 0) / number / (number - 1)) * 10000000) / 10000000;
       }
       
       // Функция, систематизирующая вывод всех таблиц по заданому массиву входных данных размером number
@@ -86,7 +89,7 @@
           h4.innerHTML = `Таблица на ${number} значений`;
         let div = document.createElement('div');
         let p = document.createElement('p');
-          p.innerHTML = `Сумма значений периодов(Σ T) для ${number} замеров: ${Math.round((tablT(array).reduce((acc, elem) => acc + Number(elem), 0)) * 10000) / 10000} <br>Среднее значение периода (T) для ${number} замеров: ${average(array, number)} <br>Сумма квадратов абсолютных погрешностей(Σ(△ T)²) <br> для ${number} замеров: ${Math.round(arrayDTpow.reduce((acc, elem) => acc + elem, 0) * 100000000) / 100000000} <br>Среднее значение квадрата абсолютной погрешности <br>(Σ(△ T)²) / ${number} для ${number} замеров: ${Math.round((arrayDTpow.reduce((acc, elem) => acc + elem, 0)) / number * 1000000000) / 1000000000}`
+          p.innerHTML = `Сумма значений периодов ( Σ(T) ) для ${number} замеров: ${Math.round((tablT(array).reduce((acc, elem) => acc + Number(elem), 0)) * 10000) / 10000} <br>Среднее значение периода ❬T❭ для ${number} замеров: ${average(array, number)} <br>Сумма квадратов абсолютных погрешностей ( Σ(△ T)² ) <br> для ${number} замеров: ${Math.round(arrayDTpow.reduce((acc, elem) => acc + elem, 0) * 100000000) / 100000000} <br>Среднее значение квадрата абсолютной погрешности <br>❬△ T)²❭ для ${number} замеров: ${Math.round((arrayDTpow.reduce((acc, elem) => acc + elem, 0)) / number * 1000000000) / 1000000000} <br>Случайная погрешность S для ${number} замеров: ${s(array, number)} <br>Систематическая погрешность σ: ${Number((0.01 / (5 * Math.sqrt(12))).toFixed(6))}`;
         //Таблыця
         let tr = document.createElement('tr');
           tr.innerHTML = '<td>№</td><td>T,сек</td><td>Период</td><td>Погрешность</td><td>Квадрат. погрешн.</td>';
