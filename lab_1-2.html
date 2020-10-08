@@ -4,9 +4,10 @@
   <title>Lab 1-2</title>
   <style>
     table{
+      border: 1px solid #000;
+      border-collapse: collapse;
       text-align: center;
       display: inline-block;
-      border-spacing: 3px;
     }
     body{
       vertical-align: top;
@@ -24,37 +25,21 @@
       margin-right: 40px;
 
     }
-    .cent{
-        border-right:0;
-        border-top:0;
-        border-bottom: 0;
+    tr, td{
+        padding: 5px;
+        border: 0;
     }
-    .cent-left{
-        border:0;
+    tr:nth-of-type(3n){
+        border-bottom: 1px solid #000;
     }
-    .mid-top{
-        border-right: 0;
-        border-bottom: 0;
-    }
-    .mid-top-left{
-        border-right: 0;
-        border-bottom: 0;
-        border-left: 0;
-    }
-    .mid-bottom{
-        border-right: 0;
-        border-top: 0;
-    }
-    .mid-bottom-left{
-        border-right: 0;
-        border-top: 0;
-        border-left: 0;
+
+    tr:nth-of-type(2n) td:nth-of-type(3){
+        border-top: 1px solid #000;
+        border-bottom: 1px solid #000;
     }
     td{
-      padding: 3px;
-    }
-    p{
-      line-height: 1.3;
+        border-left: 1px solid #000;
+        border-right: 1px solid #000;
     }
   </style>
 <body>
@@ -95,8 +80,6 @@
         //Переменные
         let div = document.createElement('div');
         let table = document.createElement('table');
-            table.setAttribute('border', '1');
-            table.setAttribute('color', '000');
         let h4 = document.createElement('h4');
             h4.innerHTML = `Таблица(какая-то)`;
         let p = document.createElement('p');
@@ -111,11 +94,9 @@
                     let td = document.createElement('td');
                     switch (k){ 
                         case 0:
-                            td.className = 'mid-bottom-left';
                             tr.appendChild(td);
                             break;
                         case 1:
-                            td.className = 'mid-bottom';
                             tr.appendChild(td);
                             break;
                         case 2:
@@ -123,15 +104,12 @@
                             tr.appendChild(td);
                             break; 
                         case 3:
-                            td.className = 'mid-bottom-left';
                             tr.appendChild(td);
                             break; 
                         case 4:
-                            td.className = 'mid-bottom';
                             tr.appendChild(td);
                             break; 
                         case 5:
-                            td.className = 'mid-bottom';
                             tr.appendChild(td);
                             break; 
                     }
@@ -142,11 +120,9 @@
                     let td = document.createElement('td');
                     switch (k){ 
                         case 0:
-                            td.className = 'mid-top-left';
                             tr.appendChild(td);
                             break;
                         case 1:
-                            td.className = 'mid-top';
                             tr.appendChild(td);
                             break;
                         case 2:
@@ -154,15 +130,12 @@
                             tr.appendChild(td);
                             break; 
                         case 3:
-                            td.className = 'mid-top-left';
                             tr.appendChild(td);
                             break; 
                         case 4:
-                            td.className = 'mid-top';
                             tr.appendChild(td);
                             break; 
                         case 5:
-                            td.className = 'mid-top';
                             tr.appendChild(td);
                             break; 
                     }
@@ -174,12 +147,10 @@
                     switch (k){ 
                         case 0:
                             td.innerHTML = `${counter+1}`;
-                            td.className = 'cent-left';
                             tr.appendChild(td);
                             break;
                         case 1:
                             td.innerHTML = arrayA[counter];
-                            td.className = 'cent';
                             tr.appendChild(td);
                             break;
                         case 2:
@@ -188,17 +159,14 @@
                             break; 
                         case 3:
                             td.innerHTML = arrayAverage[counter];
-                            td.className = 'cent-left';
                             tr.appendChild(td);
                             break; 
                         case 4:
                             td.innerHTML = arraySquare[counter];
-                            td.className = 'cent';
                             tr.appendChild(td);
                             break; 
                         case 5:
                             td.innerHTML = arraySquareT[counter];
-                            td.className = 'cent';
                             tr.appendChild(td);
                             break; 
                     }
