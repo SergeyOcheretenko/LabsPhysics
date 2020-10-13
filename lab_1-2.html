@@ -1,4 +1,4 @@
-<doctype! html>
+<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
   <title>Lab 1-2</title>
@@ -44,7 +44,13 @@
   </style>
 <body>
     <div id="table-lab"></div>
-    <script type="text/javascript" defer>
+    <div class="canvas-holder">
+        <canvas id="chart-1" width="600" height="600"></canvas>
+        <canvas id="chart-2" width="600" height="600"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script type="text/javascript">
     // Lab 1-2
         const PI = Math.PI;
 
@@ -76,6 +82,7 @@
         const g = Number((4 * PI * PI / k).toFixed(2));
         arrayAverage.forEach(elem => elem < min ? min = elem : '')
         arrayA.forEach((elem, idx) => arrayAverage[idx] === min ? i = idx : '');
+        a0 = arrayA[i]
         //Вывод:
         //Переменные
         let div = document.createElement('div');
@@ -186,5 +193,111 @@
         div.appendChild(h4);
         div.appendChild(p);
         document.querySelector('#table-lab').appendChild(div);
+
+        // Перетворює два масиви в масив об'єктів координат
+        function zip(array1, array2) {
+            let result = [];
+            let end = Math.min(array1.length, array2.length);
+            for (let i=0; i < end; i++)
+                result.push({x: array1[i], y: array2[i]});
+            return result
+        }
+
+        // Розвертаємо масиви для побудови графіків
+        for (array of [arrayA, arrayAverage, arraySquare, arraySquareT]) array.reverse();
+
+        // Графік 1
+        new Chart(document.getElementById('chart-1').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: arrayA,
+                datasets: [{
+                    // Виділяємо мінімальний показник
+                    borderColor: '#FF6384',
+                    backgroundColor: '#FF6384',
+                    fill: false,
+                    data: [{x: a0, y: min}]
+                },
+                {
+                    // Дані, де x = a, y = T
+                    borderColor: '#36A2EB',
+                    backgroundColor: '#36A2EB',
+                    fill: false,
+                    data: arrayAverage
+                }]
+            },
+            options: {
+                responsive: true,
+				tooltips: {
+					mode: 'nearest',
+					intersect: false,
+				},
+                legend: {display: false},
+                scales: {
+					xAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: 'a'
+						}
+					}],
+					yAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: '⟨T⟩'
+						}
+					}]
+				}
+            }
+        });
+
+        // Останній елемент списку з ⟨T⟩² ⋅ a
+        let lastArraySquare = arraySquare[arraySquare.length - 1]
+
+        // Графік 2
+        new Chart(document.getElementById('chart-2').getContext('2d'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    // Дані, де x = a², y = ⟨T⟩² ⋅ a
+                    borderColor: '#36A2EB',
+                    backgroundColor: '#36A2EB',
+                    data: zip(arraySquare, arraySquareT)
+                },
+                {
+                    // Лінія побудована за y = k * x + b
+                    borderColor: '#FF6384',
+                    borderWidth: 1,
+                    pointRadius: 0,
+                    data: [{x: 0, y: b}, {x: lastArraySquare, y: k * lastArraySquare + b}],
+                    fill: false,
+                    type: 'line'
+                }]
+            },
+            options: {
+                responsive: true,
+				tooltips: {
+					mode: 'nearest',
+					intersect: false,
+				},
+                legend: {display: false},
+                scales: {
+                    xAxes: [{
+                        beginAtZero: true,
+                        position: 'bottom',
+                        scaleLabel: {
+							display: true,
+							labelString: 'a²'
+						}
+                    }],
+                    yAxes: [{
+                        beginAtZero: true,
+						scaleLabel: {
+							display: true,
+							labelString: '⟨T⟩² ⋅ a'
+						}
+					}]
+                }
+            }
+        });
     </script>
 </body>
