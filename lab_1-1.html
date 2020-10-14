@@ -50,7 +50,7 @@
       // Создание массива периодов
       const tablT = (array) => { return array.map(elem => Math.round(Number(elem) / 5 * 1000) / 1000); }
       
-      // Создание среднего значения период
+      // Создание среднего значения периода
       const average = (array, number) => { return Math.round((tablT(array).reduce((acc, elem) => acc + Number(elem), 0)) / number *   10000) / 10000; }
       
       // Создание массива абсолютных погрешностей
