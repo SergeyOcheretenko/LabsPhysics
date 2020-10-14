@@ -1,52 +1,84 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-  <title>Lab 1-2</title>
-  <style>
-    table{
-      border: 1px solid #000;
-      border-collapse: collapse;
-      text-align: center;
-      display: inline-block;
-    }
-    body{
-      vertical-align: top;
-    }
-    h4{
-      width: 200px;
-      margin: 0 auto;
-      margin-bottom: 7px;
-    }
-    div{
-      vertical-align: top;
-      display: inline-block;
-      text-align: center;
-      justify-content: center;
-      margin-right: 40px;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 1-2</title>
+    <style>
+        * {
+            margin: 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
 
-    }
-    tr, td{
-        padding: 5px;
-        border: 0;
-    }
-    tr:nth-of-type(3n){
-        border-bottom: 1px solid #000;
-    }
+        table td, table th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
 
-    tr:nth-of-type(2n) td:nth-of-type(3){
-        border-top: 1px solid #000;
-        border-bottom: 1px solid #000;
-    }
-    td{
-        border-left: 1px solid #000;
-        border-right: 1px solid #000;
-    }
-  </style>
+        table tr:nth-child(even) {background-color: #f2f2f2;}
+
+        table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+        }
+
+        .table-1__table {
+            text-align: center;
+        }
+        .container {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .column {
+            margin: 20px 50px;
+            width: 49%;
+        }
+        canvas {
+            margin-top: 50px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .column {
+                margin: 20px 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
 <body>
-    <div id="table-lab"></div>
-    <div class="canvas-holder">
-        <canvas id="chart-1" width="600" height="600"></canvas>
-        <canvas id="chart-2" width="600" height="600"></canvas>
+    <div class="container">
+        <div class="column">
+            <div class="table-1__wrapper">
+                <h4>Таблица(какая-то)</h4>
+                <table class="table-1__table">
+                    <thead>
+                        <th>&nbsp;</th>
+                        <th>a, м</th>
+                        <th>T= t/10, с</th>
+                        <th>⟨T⟩, с</th>
+                        <th>a², м²</th>
+                        <th>⟨T⟩² ⋅ a, с² ⋅ м</th>
+                    </thead>
+                    <tbody id="table-1__body"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="column">
+            <div class="table-2__wrapper">
+                <h4>Значения(какие-то)</h4>
+                <table class="table-2__table">
+                    <tbody id="table-2__body"></tbody>
+                </table>
+            </div>
+            <div class="canvas__wrapper">
+                <canvas id="chart-1" width="400" height="400"></canvas>
+                <canvas id="chart-2" width="400" height="400"></canvas>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
@@ -74,125 +106,54 @@
 
         const arraySquareT = [...new Array(20)].map((elem, idx) => Number((arrayA[idx] * arrayAverage[idx] ** 2).toFixed(4))); //Массив T*T*a
 
-        let min = 10;
-        let i = 0;
-        let a0 = 0;
+        const Tmin = Math.min(...arrayAverage);
+        const a0 = arrayA[arrayAverage.indexOf(Tmin)];
         const k = Number(((arraySquareT[2] - arraySquareT[5])/(arraySquare[2] - arraySquare[5])).toFixed(3));
         const b = Number((arraySquareT[2] - k * arraySquare[2]).toFixed(3));
         const g = Number((4 * PI * PI / k).toFixed(2));
-        arrayAverage.forEach(elem => elem < min ? min = elem : '')
-        arrayA.forEach((elem, idx) => arrayAverage[idx] === min ? i = idx : '');
-        a0 = arrayA[i]
+        const L = Math.sqrt(b * 3 * g / PI / PI).toFixed(3);
+        const relativeError = (Math.abs(g - 9.8) / 9.8 * 100).toFixed(2);
+
         //Вывод:
-        //Переменные
-        let div = document.createElement('div');
-        let table = document.createElement('table');
-        let h4 = document.createElement('h4');
-            h4.innerHTML = `Таблица(какая-то)`;
-        let p = document.createElement('p');
-            p.innerHTML = `Tmin === ${min}<br>a0 === ${arrayA[i]}<br>a0 теоретическое === 0,435<br>k === ${k}<br>b === ${b}<br>g експериментальное === ${g} < 9.8 (g табличное)<br>L експериментальное === ${Math.round(Math.sqrt(b * 3 * g / PI / PI) * 1000) / 1000} > 1.5 (L точное)`
-        let counter = 0;
-        //Создание таблицы
-        for(let i = 0; i<(arrayA.length*3);i++){
-            let tr = document.createElement('tr');
-            switch(i%3){
-                case 2:
-                for(let k = 0; k<6; k++){ //Для 2 других строчек ячейки
-                    let td = document.createElement('td');
-                    switch (k){ 
-                        case 0:
-                            tr.appendChild(td);
-                            break;
-                        case 1:
-                            tr.appendChild(td);
-                            break;
-                        case 2:
-                            td.innerHTML = arrayT[i];
-                            tr.appendChild(td);
-                            break; 
-                        case 3:
-                            tr.appendChild(td);
-                            break; 
-                        case 4:
-                            tr.appendChild(td);
-                            break; 
-                        case 5:
-                            tr.appendChild(td);
-                            break; 
-                    }
-                    }
-                    break;
-                case 0:
-                    for(let k = 0; k<6; k++){ //Для 2 других строчек ячейки
-                    let td = document.createElement('td');
-                    switch (k){ 
-                        case 0:
-                            tr.appendChild(td);
-                            break;
-                        case 1:
-                            tr.appendChild(td);
-                            break;
-                        case 2:
-                            td.innerHTML = arrayT[i];
-                            tr.appendChild(td);
-                            break; 
-                        case 3:
-                            tr.appendChild(td);
-                            break; 
-                        case 4:
-                            tr.appendChild(td);
-                            break; 
-                        case 5:
-                            tr.appendChild(td);
-                            break; 
-                    }
-                    }
-                    break;
-                case 1:
-                    for(let k = 0; k<6; k++){ //Для средней строчки ячейки
-                    let td = document.createElement('td');
-                    switch (k){ 
-                        case 0:
-                            td.innerHTML = `${counter+1}`;
-                            tr.appendChild(td);
-                            break;
-                        case 1:
-                            td.innerHTML = arrayA[counter];
-                            tr.appendChild(td);
-                            break;
-                        case 2:
-                            td.innerHTML = arrayT[i];
-                            tr.appendChild(td);
-                            break; 
-                        case 3:
-                            td.innerHTML = arrayAverage[counter];
-                            tr.appendChild(td);
-                            break; 
-                        case 4:
-                            td.innerHTML = arraySquare[counter];
-                            tr.appendChild(td);
-                            break; 
-                        case 5:
-                            td.innerHTML = arraySquareT[counter];
-                            tr.appendChild(td);
-                            break; 
-                    }
-                    }
-                    counter++;
-                    break;
-                
-            }
-            table.appendChild(tr);
-        }
-        div.appendChild(h4);
-        div.appendChild(table);
-        document.querySelector('#table-lab').appendChild(div);
-        div = document.createElement('div');
-        h4 = document.createElement('h4');
-        h4.innerHTML = 'Значения(какие-то)';
-        div.appendChild(h4);
-        div.appendChild(p);
-        document.querySelector('#table-lab').appendChild(div);
+
+        //Создание таблицы 1
+        let tbody = document.getElementById('table-1__body')
+        for (let i=0; i < arrayA.length; i++){
+            tbody.insertAdjacentHTML("beforeend", `
+                <tr>
+                    <td rowspan="3">${i + 1}</td>
+                    <td rowspan="3">${arrayA[i]}</td>
+                    <td>${arrayT[3*i + 0]}</td>
+                    <td rowspan="3">${arrayAverage[i]}</td>
+                    <td rowspan="3">${arraySquare[i]}</td>
+                    <td rowspan="3">${arraySquareT[i]}</td>
+                </tr>
+                <tr>
+                    <td>${arrayT[3*i + 1]}</td>
+                </tr>
+                <tr>
+                    <td>${arrayT[3*i + 2]}</td>
+                </tr>
+            `)
+        };
+        
+        document.getElementById('table-2__body').innerHTML = `
+            <tr>
+                <td>T<sub>min</sub> (c) = ${Tmin}</td>
+                <td>k (с²/м) = ${k}</td>
+            </tr>
+            <tr>
+                <td>a<sub>0</sub> (м) = ${a0}; a<sub>0 теор</sub> (м) = 0.435</td>
+                <td>b (м ⋅ с²) = ${b}</td>
+            </tr>
+            <tr>
+                <td>g<sub>екс</sub> (м/с²) = ${g}; g<sub>табл</sub> (м/с²) = 9.8</td>
+                <td>L<sub>екс</sub> (м) = ${L}; L<sub>вим</sub> (м) = 1.5</td>
+            </tr>
+            <tr>
+                <td colspan="2">Похибка ε = (|g<sub>екс</sub> – g<sub>табл</sub>| / g<sub>табл</sub>) ⋅ 100% = ${relativeError} %</td>
+            </tr>
+        `;
 
         // Перетворює два масиви в масив об'єктів координат
         function zip(array1, array2) {
@@ -204,7 +165,8 @@
         }
 
         // Розвертаємо масиви для побудови графіків
-        for (array of [arrayA, arrayAverage, arraySquare, arraySquareT]) array.reverse();
+        for (array of [arrayA, arrayAverage, arraySquare, arraySquareT])
+            array.reverse();
 
         // Графік 1
         new Chart(document.getElementById('chart-1').getContext('2d'), {
@@ -216,7 +178,7 @@
                     borderColor: '#FF6384',
                     backgroundColor: '#FF6384',
                     fill: false,
-                    data: [{x: a0, y: min}]
+                    data: [{x: a0, y: Tmin}]
                 },
                 {
                     // Дані, де x = a, y = T
@@ -301,3 +263,4 @@
         });
     </script>
 </body>
+</html>
