@@ -20,7 +20,9 @@
             padding: 8px;
         }
 
-        table tr:nth-child(even) {background-color: #f2f2f2;}
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
 
         table th {
             padding: 12px 8px;
@@ -90,47 +92,78 @@
     // Lab 1-2
         const PI = Math.PI;
 
-        const random = (min, max) => Math.random() * (max - min) + min;
-
-        const pushElem = (array, min, max) => {
-        for (let i = 0; i < 3; i++) array.push(Number(random(min, max).toFixed(3)));
-        return array;
+        // Псевдо випадкові числа
+        function uniformRandom(min, max) {
+            return Math.random() * (max - min) + min
         }
 
+        // Рандом за гауссом
+        function gaussianRandom(mean, sigma) {
+            let u = Math.random()*0.682;
+            return ((u % 1e-8 > 5e-9 ? 1 : -1) * (Math.sqrt(-Math.log(Math.max(1e-9, u)))-0.618))*1.618 * sigma + mean;
+        }
+
+        // Округлення до n-ого знака пілся коми
+        function roundOff(num, places) {
+            const x = Math.pow(10,places);
+            return Math.round((num + Number.EPSILON) * x) / x;
+        }
+
+        // Перетворює два масиви в масив об'єктів координат
+        function zip(array1, array2) {
+            let result = [];
+            let end = Math.min(array1.length, array2.length);
+            for (let i=0; i < end; i++)
+                result.push({x: array1[i], y: array2[i]});
+            return result
+        }
+
+
         // Массив а
-        const arrayA = [...new Array(20)].map((elem, idx) => (75 - idx * 3) / 100);
+        let arrayA = [0.70, 0.67, 0.64, 0.60, 0.57, 0.54, 0.51, 0.48, 0.45, 0.41, 0.38, 0.35, 0.32, 0.28, 0.25]
 
-        let arrayT = []; //Массив периодов
-        const diap = [2.093, 2.1, 2.068, 2.073, 2.052, 2.057, 2.037, 2.042, 2.021, 2.026, 2.002, 2.008, 1.991, 1.997, 1.982, 1.987, 1.972, 1.978, 1.968, 1.972, 1.964, 1.969, 1.962, 1.967, 1.971, 1.976, 1.981, 1.985, 1.998, 2.005, 2.033, 2.039, 2.078, 2.084, 2.134, 2.141, 2.228, 2.236, 2.335, 2.339]; //Диапазоны генерирования
-        for(let i = 0; i < 40; i += 2) pushElem(arrayT, diap[i], diap[i+1]);
+        // Массив T
+        let arrayT = []; 
+        const diap = [2.0267, 2.0080, 1.9883, 1.9667, 1.9497, 1.9363, 1.9257, 1.9183, 1.9120, 1.9113, 1.9163, 1.9283, 1.9493, 1.9953, 2.0450]
 
-        const arrayAverage = [...new Array(20)].map((elem, idx) => Number(((arrayT[idx * 3 + 2] + arrayT[idx * 3 + 1] + arrayT[idx * 3]) / 3).toFixed(5))); //Массив средних значений периода
+        const mean = uniformRandom(-0.025, 0.01); // мода для гаусса
+        const sigma = 0.001;                      // сігма для гаусса
 
-        const arraySquare = [...new Array(20)].map((elem, idx) => Number((arrayA[idx] ** 2).toFixed(4))); //Массив а*а
+        for(let i = 0; i < 3 * diap.length; i++) {
+            let a = diap[parseInt(i / 3)];
+            arrayT.push(roundOff(a + gaussianRandom(mean, sigma), 3));
+        }
 
-        const arraySquareT = [...new Array(20)].map((elem, idx) => Number((arrayA[idx] * arrayAverage[idx] ** 2).toFixed(4))); //Массив T*T*a
+        // Массив ⟨T⟩
+        let arrayAverageT = [...new Array(15)].map((elem, idx) => roundOff((arrayT[idx * 3 + 0] + arrayT[idx * 3 + 1] + arrayT[idx * 3 + 2]) / 3, 5));
 
-        const Tmin = Math.min(...arrayAverage);
-        const a0 = arrayA[arrayAverage.indexOf(Tmin)];
-        const k = Number(((arraySquareT[2] - arraySquareT[5])/(arraySquare[2] - arraySquare[5])).toFixed(3));
-        const b = Number((arraySquareT[2] - k * arraySquare[2]).toFixed(3));
-        const g = Number((4 * PI * PI / k).toFixed(2));
-        const L = Math.sqrt(b * 3 * g / PI / PI).toFixed(3);
-        const relativeError = (Math.abs(g - 9.8) / 9.8 * 100).toFixed(2);
+        // Массив а²
+        let arraySquareA = [...new Array(15)].map((elem, idx) => roundOff(arrayA[idx] ** 2, 4));
 
-        //Вывод:
+        // Массив ⟨T⟩² ⋅ a
+        let arraySquareTxA = [...new Array(15)].map((elem, idx) => roundOff(arrayA[idx] * arrayAverageT[idx] ** 2, 4)); 
 
-        //Создание таблицы 1
+        const Tmin = Math.min(...arrayAverageT);
+        const a0 = arrayA[arrayAverageT.indexOf(Tmin)];
+        const k = roundOff((arraySquareTxA[2] - arraySquareTxA[5]) / (arraySquareA[2] - arraySquareA[5]), 3);
+        const b = roundOff(arraySquareTxA[2] - k * arraySquareA[2], 3);
+        const g = roundOff(4 * PI * PI / k, 2);
+        const L = roundOff(Math.sqrt(b * 3 * g / PI / PI), 3);
+        const relativeError = roundOff(Math.abs((g - 9.8) / 9.8 * 100), 2);
+
+        // Вывод:
+
+        // Создание таблицы 1
         let tbody = document.getElementById('table-1__body')
         for (let i=0; i < arrayA.length; i++){
-            tbody.insertAdjacentHTML("beforeend", `
+            tbody.insertAdjacentHTML('beforeend', `
                 <tr>
                     <td rowspan="3">${i + 1}</td>
                     <td rowspan="3">${arrayA[i]}</td>
                     <td>${arrayT[3*i + 0]}</td>
-                    <td rowspan="3">${arrayAverage[i]}</td>
-                    <td rowspan="3">${arraySquare[i]}</td>
-                    <td rowspan="3">${arraySquareT[i]}</td>
+                    <td rowspan="3">${arrayAverageT[i]}</td>
+                    <td rowspan="3">${arraySquareA[i]}</td>
+                    <td rowspan="3">${arraySquareTxA[i]}</td>
                 </tr>
                 <tr>
                     <td>${arrayT[3*i + 1]}</td>
@@ -140,7 +173,8 @@
                 </tr>
             `)
         };
-        
+
+        // Создание таблицы 2
         document.getElementById('table-2__body').innerHTML = `
             <tr>
                 <td>T<sub>min</sub> (c) = ${Tmin}</td>
@@ -159,17 +193,8 @@
             </tr>
         `;
 
-        // Перетворює два масиви в масив об'єктів координат
-        function zip(array1, array2) {
-            let result = [];
-            let end = Math.min(array1.length, array2.length);
-            for (let i=0; i < end; i++)
-                result.push({x: array1[i], y: array2[i]});
-            return result
-        }
-
         // Розвертаємо масиви для побудови графіків
-        for (array of [arrayA, arrayAverage, arraySquare, arraySquareT])
+        for (array of [arrayA, arrayAverageT, arraySquareA, arraySquareTxA])
             array.reverse();
 
         // Графік 1
@@ -189,7 +214,7 @@
                     borderColor: '#36A2EB',
                     backgroundColor: '#36A2EB',
                     fill: false,
-                    data: arrayAverage
+                    data: arrayAverageT
                 }]
             },
             options: {
@@ -217,7 +242,7 @@
         });
 
         // Останній елемент списку з ⟨T⟩² ⋅ a
-        let lastArraySquare = arraySquare[arraySquare.length - 1]
+        let lastArraySquareA = arraySquareA[arraySquareA.length - 1]
 
         // Графік 2
         new Chart(document.getElementById('chart-2').getContext('2d'), {
@@ -227,14 +252,14 @@
                     // Дані, де x = a², y = ⟨T⟩² ⋅ a
                     borderColor: '#36A2EB',
                     backgroundColor: '#36A2EB',
-                    data: zip(arraySquare, arraySquareT)
+                    data: zip(arraySquareA, arraySquareTxA)
                 },
                 {
                     // Лінія побудована за y = k * x + b
                     borderColor: '#FF6384',
                     borderWidth: 1,
                     pointRadius: 0,
-                    data: [{x: 0, y: b}, {x: lastArraySquare, y: k * lastArraySquare + b}],
+                    data: [{x: 0, y: b}, {x: lastArraySquareA, y: k * lastArraySquareA + b}],
                     fill: false,
                     type: 'line'
                 }]
