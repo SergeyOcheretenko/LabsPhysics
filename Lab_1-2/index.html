@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 1-2</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="column">
+            <div class="table-1__wrapper">
+                <h4>Таблица(какая-то)</h4>
+                <table class="table-1__table">
+                    <thead>
+                        <th>&nbsp;</th>
+                        <th>a, м</th>
+                        <th>T= t/10, с</th>
+                        <th>⟨T⟩, с</th>
+                        <th>a², м²</th>
+                        <th>⟨T⟩² ⋅ a, с² ⋅ м</th>
+                    </thead>
+                    <tbody id="table-1__body"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="column">
+            <div class="table-2__wrapper">
+                <h4>Значения(какие-то)</h4>
+                <table class="table-2__table">
+                    <tbody id="table-2__body"></tbody>
+                </table>
+            </div>
+            <div class="canvas__wrapper">
+                <canvas id="chart-1" width="400" height="400"></canvas>
+                <canvas id="chart-2" width="400" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+</body>
+</html>
