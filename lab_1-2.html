@@ -7,6 +7,7 @@
     <style>
         * {
             margin: 0;
+            box-sizing: border-box;
         }
         table {
             border-collapse: collapse;
@@ -28,22 +29,25 @@
         .table-1__table {
             text-align: center;
         }
+        .table-2__table {
+            word-wrap: normal;
+        }
         .container {
-            width: 100%;
             display: flex;
             flex-wrap: wrap;
+            justify-content: space-evenly;
         }
         .column {
-            margin: 20px 50px;
+            margin-top: 20px;
             width: 49%;
+            max-width: 600px;
         }
         canvas {
             margin-top: 50px;
         }
 
-        @media only screen and (max-width: 600px) {
+        @media only screen and (max-width: 1200px) {
             .column {
-                margin: 20px 0;
                 width: 100%;
             }
         }
@@ -139,16 +143,16 @@
         
         document.getElementById('table-2__body').innerHTML = `
             <tr>
-                <td>T<sub>min</sub> (c) = ${Tmin}</td>
-                <td>k (с²/м) = ${k}</td>
+                <td>T<sub>min</sub> (c) = ${Tmin}</td>
+                <td>k (с² / м) = ${k}</td>
             </tr>
             <tr>
-                <td>a<sub>0</sub> (м) = ${a0}; a<sub>0 теор</sub> (м) = 0.435</td>
+                <td>a<sub>0</sub> (м) = ${a0}; a<sub>0 теор</sub> (м) = 0.435</td>
                 <td>b (м ⋅ с²) = ${b}</td>
             </tr>
             <tr>
-                <td>g<sub>екс</sub> (м/с²) = ${g}; g<sub>табл</sub> (м/с²) = 9.8</td>
-                <td>L<sub>екс</sub> (м) = ${L}; L<sub>вим</sub> (м) = 1.5</td>
+                <td>g<sub>екс</sub>   (м / с²) = ${g}; g<sub>табл</sub> (м / с²) = 9.8</td>
+                <td>L<sub>екс</sub> (м) = ${L}; L<sub>вим</sub> (м) = 1.5</td>
             </tr>
             <tr>
                 <td colspan="2">Похибка ε = (|g<sub>екс</sub> – g<sub>табл</sub>| / g<sub>табл</sub>) ⋅ 100% = ${relativeError} %</td>
