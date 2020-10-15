@@ -1,0 +1,26 @@
+table{
+    text-align: center;
+    display: inline-block;
+    border-spacing: 3px;
+  }
+  body{
+    vertical-align: top;
+  }
+  h4{
+    width: 200px;
+    margin: 0;
+    margin-bottom: 7px;
+  }
+  div{
+    vertical-align: top;
+    display: inline-block;
+    text-align: center;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+  td{
+    padding: 3px;
+  }
+  p{
+    line-height: 1.3;
+  }
