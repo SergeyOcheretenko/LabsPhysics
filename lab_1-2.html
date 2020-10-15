@@ -90,7 +90,7 @@
         let h4 = document.createElement('h4');
             h4.innerHTML = `Таблица(какая-то)`;
         let p = document.createElement('p');
-            p.innerHTML = `Tmin === ${min}<br>a0 === ${arrayA[i]}<br>a0 теоретическое === 0,435<br>k === ${k}<br>b === ${b}<br>g експериментальное === ${g} < 9.8 (g табличное)<br>L експериментальное === ${Math.round(Math.sqrt(b * 3 * g / PI / PI) * 1000) / 1000} > 1.5 (L точное)`
+            p.innerHTML = `Tmin === ${min}<br>a0 === ${arrayA[i]}<br>a0 теоретическое === 0,435<br>k === ${k}<br>b === ${b}<br>g експериментальное === ${g} < 9.8 (g табличное)<br>L експериментальное === ${Math.round(Math.sqrt(b * 3 * g / PI / PI) * 1000) / 1000} > 1.5 (L точное)<br>Погрешность ε === ${Number(((9.8 - g) / 9.8 * 100).toFixed(2))}%`
         let counter = 0;
         //Создание таблицы
         for(let i = 0; i<(arrayA.length*3);i++){
