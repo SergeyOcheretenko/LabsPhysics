@@ -109,9 +109,8 @@ for (let array of [arrayA, arrayAverageT, arraySquareA, arraySquareTxA])
 
 // Графік 1
 let chart1 = new Chart(document.getElementById('chart-1').getContext('2d'), {
-    type: 'line',
+    type: 'scatter',
     data: {
-        labels: arrayA,
         datasets: [{
             // Виділяємо мінімальний показник
             borderColor: '#FF6384',
@@ -124,7 +123,8 @@ let chart1 = new Chart(document.getElementById('chart-1').getContext('2d'), {
             borderColor: '#36A2EB',
             backgroundColor: '#36A2EB',
             fill: false,
-            data: arrayAverageT
+            data: zip(arrayA, arrayAverageT),
+            type: 'line'
         }]
     },
     options: {
