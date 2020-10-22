@@ -1,20 +1,21 @@
+/* jshint esversion: 7 */
 // Lab 1-2
 const PI = Math.PI;
 
 // Псевдо випадкові числа
 function uniformRandom(min, max) {
-    return Math.random() * (max - min) + min
+    return Math.random() * (max - min) + min;
 }
 
 // Рандом за гауссом
 function gaussianRandom(mean, sigma) {
-    let u = Math.random()*0.682;
-    return ((u % 1e-8 > 5e-9 ? 1 : -1) * (Math.sqrt(-Math.log(Math.max(1e-9, u)))-0.618))*1.618 * sigma + mean;
+    let u = Math.random() * 0.682;
+    return ((u % 1e-8 > 5e-9 ? 1 : -1) * (Math.sqrt(-Math.log(Math.max(1e-9, u))) - 0.618)) * 1.618 * sigma + mean;
 }
 
 // Округлення до n-ого знака пілся коми
 function roundOff(num, places) {
-    const x = Math.pow(10,places);
+    const x = Math.pow(10, places);
     return Math.round((num + Number.EPSILON) * x) / x;
 }
 
@@ -24,16 +25,16 @@ function zip(array1, array2) {
     let end = Math.min(array1.length, array2.length);
     for (let i=0; i < end; i++)
         result.push({x: array1[i], y: array2[i]});
-    return result
+    return result;
 }
 
 
 // Массив а
-let arrayA = [0.70, 0.67, 0.64, 0.60, 0.57, 0.54, 0.51, 0.48, 0.45, 0.41, 0.38, 0.35, 0.32, 0.28, 0.25]
+let arrayA = [0.70, 0.67, 0.64, 0.60, 0.57, 0.54, 0.51, 0.48, 0.45, 0.41, 0.38, 0.35, 0.32, 0.28, 0.25];
 
 // Массив T
 let arrayT = []; 
-const diap = [2.0267, 2.0080, 1.9883, 1.9667, 1.9497, 1.9363, 1.9257, 1.9183, 1.9120, 1.9113, 1.9163, 1.9283, 1.9493, 1.9953, 2.0450]
+const diap = [2.0267, 2.0080, 1.9883, 1.9667, 1.9497, 1.9363, 1.9257, 1.9183, 1.9120, 1.9113, 1.9163, 1.9283, 1.9493, 1.9953, 2.0450];
 
 const mean = uniformRandom(-0.025, 0.01); // мода для гаусса
 const sigma = 0.001;                      // сігма для гаусса
@@ -63,7 +64,7 @@ const relativeError = roundOff(Math.abs((g - 9.8) / 9.8 * 100), 2);
 // Вывод:
 
 // Создание таблицы 1
-let tbody = document.getElementById('table-1__body')
+let tbody = document.getElementById('table-1__body');
 for (let i=0; i < arrayA.length; i++){
     tbody.insertAdjacentHTML('beforeend', `
         <tr>
@@ -80,8 +81,8 @@ for (let i=0; i < arrayA.length; i++){
         <tr>
             <td>${arrayT[3*i + 2]}</td>
         </tr>
-    `)
-};
+    `);
+}
 
 // Создание таблицы 2
 document.getElementById('table-2__body').innerHTML = `
@@ -103,14 +104,13 @@ document.getElementById('table-2__body').innerHTML = `
 `;
 
 // Розвертаємо масиви для побудови графіків
-for (array of [arrayA, arrayAverageT, arraySquareA, arraySquareTxA])
+for (let array of [arrayA, arrayAverageT, arraySquareA, arraySquareTxA])
     array.reverse();
 
 // Графік 1
-new Chart(document.getElementById('chart-1').getContext('2d'), {
-    type: 'line',
+let chart1 = new Chart(document.getElementById('chart-1').getContext('2d'), {
+    type: 'scatter',
     data: {
-        labels: arrayA,
         datasets: [{
             // Виділяємо мінімальний показник
             borderColor: '#FF6384',
@@ -123,7 +123,8 @@ new Chart(document.getElementById('chart-1').getContext('2d'), {
             borderColor: '#36A2EB',
             backgroundColor: '#36A2EB',
             fill: false,
-            data: arrayAverageT
+            data: zip(arrayA, arrayAverageT),
+            type: 'line'
         }]
     },
     options: {
@@ -151,10 +152,10 @@ new Chart(document.getElementById('chart-1').getContext('2d'), {
 });
 
 // Останній елемент списку з ⟨T⟩² ⋅ a
-let lastArraySquareA = arraySquareA[arraySquareA.length - 1]
+let lastArraySquareA = arraySquareA[arraySquareA.length - 1];
 
 // Графік 2
-new Chart(document.getElementById('chart-2').getContext('2d'), {
+let chart2 = new Chart(document.getElementById('chart-2').getContext('2d'), {
     type: 'scatter',
     data: {
         datasets: [{
